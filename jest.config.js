@@ -6,7 +6,7 @@ module.exports = {
     // '!<rootDir>/src/**/index.ts',
     // '!**/*.d.ts'
   ],
-  // coverageDirectory: 'coverage',
+  coverageDirectory: 'coverage',
   // setupFilesAfterEnv: ['<rootDir>/src/main/config/jest-setup.ts'],
   // testPathIgnorePatterns: [
   //   '<rootDir>/node_modules/',
