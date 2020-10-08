@@ -12,7 +12,7 @@ module.exports = {
   //   '<rootDir>/node_modules/',
   //   '<rootDir>/src/main/test/cypress'
   // ],
-  // testEnvironment: 'jsdom',
+  testEnvironment: 'jsdom',
   transform: {
     '.+\\.(ts|tsx)$': 'ts-jest'
   },
