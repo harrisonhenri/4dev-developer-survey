@@ -1,0 +1,133 @@
+@import "../../styles/colors.scss";
+
+* {
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+input[type="password"], input[type="email"]{
+  border: 1px solid $primaryLight;
+  line-height: 40px;
+  border-radius: 10px;
+  padding: 0 40px 0 8px;
+
+  &:focus {
+    outline-color: $primaryLight;
+  }
+}
+
+button {
+  background-color: $primary;
+  color:$white;
+  border-radius: 10px;
+  font-size: 16px;
+  border: 0;
+  line-height: 60px;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+body {
+  background-color: $background;
+  transition: all 1s;
+}
+
+.login{
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: space-between;
+
+  header {
+    display: flex;
+    flex-direction: column;
+    background-color: $primary;
+    align-items: center;
+
+    img{
+      margin-top: 8px;
+    }
+
+    h1{
+      color: $white;
+      margin: 16px 0 16px;
+    }
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+    width: 100%;
+    background-color: $white;
+    padding: 40px;
+    align-self: center;
+    border-radius: 8px;
+    box-shadow: 0px 1px 3px -1px $black;
+
+    h2 {
+      color: $primaryDark;
+      text-align: center;
+      font-size: 20px;
+      text-transform: uppercase;
+    }
+
+    .inputContainer {
+      margin-top: 16px;
+      display: flex;
+      position: relative;
+      align-items: center;
+
+      input {
+        flex: 1;
+      }
+
+      .inputStatus {
+        position: absolute;
+        right: 8px;
+        cursor: help;
+      }
+
+    }
+
+    button {
+      margin-top: 16px;
+    }
+
+    .link {
+      text-align: center;
+      color: $primary;
+      margin-top: 16px;
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: overline;
+      }
+    }
+
+    .errorContainer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      .formStatus {
+        margin-top: 8px;
+      }
+
+      .error{
+        margin-top: 8px;
+        color: $primaryLight;
+      }
+    }
+  }
+
+  footer {
+    background-color: $primary;
+    height: 48px;
+  }
+}
