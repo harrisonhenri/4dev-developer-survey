@@ -10,10 +10,29 @@ module.exports = {
     publicPath: '/'
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', 'scss'],
+    extensions: ['.ts', '.tsx', '.js', 'css'],
     alias: {
       '@': path.join(__dirname, 'src')
     }
+  },
+  module: {
+    rules: [{
+      test: /\.ts(x?)$/,
+      loader: 'ts-loader',
+      exclude: /node_modules/
+    }, {
+      test: /\.css$/,
+      use: [{
+        loader: 'style-loader'
+      }, {
+        loader: 'css-loader',
+        options: {
+          modules: true
+        }
+      }, {
+        loader: 'sass-loader'
+      }]
+    }]
   },
   devServer: {
     contentBase: './public',
@@ -30,5 +49,5 @@ module.exports = {
   },
   plugins: [
     new CleanWebpackPlugin()
-  ],
+  ]
 }
