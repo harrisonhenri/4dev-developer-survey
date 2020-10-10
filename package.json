@@ -5,11 +5,13 @@
   "author": "HarrisonHenri <harrisonhenrisn@onyo.com>",
   "license": "MIT",
   "dependencies": {
+    "@types/react-router-dom": "^5.1.6",
     "axios": "^0.20.0",
     "eslint-plugin-react": "^7.21.3",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-icons": "^3.11.0"
+    "react-icons": "^3.11.0",
+    "react-router-dom": "^5.2.0"
   },
   "scripts": {
     "dev:base": "webpack-dev-server",
