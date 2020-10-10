@@ -4,6 +4,7 @@ import { FiAlertCircle } from 'react-icons/fi'
 
 import LoginHeader from '@/presentation/components/login-header/login-header'
 import Footer from '@/presentation/components/footer/footer'
+import Input from '@/presentation/components/input/input'
 
 const Login: React.FC = () => {
   return (
@@ -11,14 +12,8 @@ const Login: React.FC = () => {
       <LoginHeader/>
       <form className={Styles.form}>
         <h2>Login</h2>
-        <div className={Styles.inputContainer}>
-          <input type="email" name="email" id="E-mail"/>
-          <span className={Styles.inputStatus}><FiAlertCircle color="#c53030" size={20} /></span>
-        </div>
-        <div className={Styles.inputContainer}>
-          <input type="password" name="password" id="Senha"/>
-          <span className={Styles.inputStatus}><FiAlertCircle color="#c53030" size={20} /></span>
-        </div>
+        <Input type="email" name="email" id="E-mail"/>
+        <Input type="password" name="password" id="Senha"/>
         <button type="submit">Entrar</button>
         <span className={Styles.link}>Criar conta</span>
         <div className={Styles.errorContainer}>

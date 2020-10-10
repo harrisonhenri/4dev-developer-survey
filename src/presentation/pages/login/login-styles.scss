@@ -61,24 +61,6 @@ body {
       text-transform: uppercase;
     }
 
-    .inputContainer {
-      margin-top: 16px;
-      display: flex;
-      position: relative;
-      align-items: center;
-
-      input {
-        flex: 1;
-      }
-
-      .inputStatus {
-        position: absolute;
-        right: 8px;
-        cursor: help;
-      }
-
-    }
-
     button {
       margin-top: 16px;
     }
