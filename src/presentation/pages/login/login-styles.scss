@@ -26,6 +26,11 @@
 
     button {
       margin-top: 16px;
+
+      &:disabled {
+        background-color: $disabledBackground;
+        color:$disabledColor
+      }
     }
 
     .link {
@@ -39,19 +44,5 @@
       }
     }
 
-    .errorContainer {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-
-      .formStatus {
-        margin-top: 8px;
-      }
-
-      .error{
-        margin-top: 8px;
-        color: $primaryLight;
-      }
-    }
   }
 }
