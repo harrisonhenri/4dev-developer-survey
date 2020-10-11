@@ -1,21 +1,22 @@
 import React, { useContext } from 'react'
-import { FiAlertCircle } from 'react-icons/fi'
+import { BarLoader } from 'react-spinners'
 import Styles from './form-status-styles.scss'
 import Context from '@/presentation/context/form/form-context'
 
 const FormStatus: React.FC = () => {
   const { state } = useContext(Context)
 
-  const { main } = state
+  const { mainError, isLoading } = state
 
   return (
     <div data-testid='form-status' className={Styles.errorContainer}>
 
-      {main && (
-        <><span className={Styles.formStatus}><FiAlertCircle color="#c53030" size={20} /></span>
-          <span className={Styles.error}>Erro</span>
-        </>)
-      }
+      <BarLoader
+        color={'#123abc'}
+        loading={isLoading}
+      />
+
+      {mainError && <span data-testid='main-error' className={Styles.error}>{mainError}</span>}
     </div>
   )
 }
