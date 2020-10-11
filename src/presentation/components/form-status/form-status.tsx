@@ -4,9 +4,9 @@ import Styles from './form-status-styles.scss'
 import Context from '@/presentation/context/form/form-context'
 
 const FormStatus: React.FC = () => {
-  const { errorState } = useContext(Context)
+  const { state } = useContext(Context)
 
-  const { main } = errorState
+  const { main } = state
 
   return (
     <div data-testid='form-status' className={Styles.errorContainer}>
