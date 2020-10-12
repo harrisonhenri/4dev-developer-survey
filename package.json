@@ -20,7 +20,8 @@
     "test": "jest --passWithNoTests --no-cache --runInBand",
     "test:watch": "yarn test -- --watch",
     "test:staged": "yarn test -- --findRelatedTests",
-    "test:ci": "yarn test -- --coverage"
+    "test:ci": "yarn test -- --coverage",
+    "check": "yarn upgrade-interactive"
   },
   "devDependencies": {
     "@testing-library/react": "^11.0.4",

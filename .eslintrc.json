@@ -21,7 +21,7 @@
     "@typescript-eslint/strict-boolean-expressions": "off",
     // "@typescript-eslint/no-floating-promises": "off",
     // "@typescript-eslint/comma-spacing": "off",
-    // "@typescript-eslint/return-await": "off",
+    "@typescript-eslint/return-await": "off",
     // "@typescript-eslint/no-namespace": "off",
     // "no-redeclare": "off",
     // "import/export": "off",
