@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { BarLoader } from 'react-spinners'
 import Styles from './form-status-styles.scss'
-import Context from '@/presentation/context/form/form-context'
+import Context from '@/presentation/contexts/form/form-context'
 
 const FormStatus: React.FC = () => {
   const { state } = useContext(Context)
