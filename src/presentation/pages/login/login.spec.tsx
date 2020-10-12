@@ -187,12 +187,12 @@ describe('Login', () => {
     testFormStatusChild(sut, 1)
   })
 
-  test('should add acessToken to localStorage on sucess', async () => {
+  test('should add accessToken to localStorage on sucess', async () => {
     const { sut, authenticationSpy } = makeSut()
 
     await simulateValidSubmit(sut)
 
-    expect(localStorage.getItem('accessToken')).toBe(authenticationSpy.account.acessToken)
+    expect(localStorage.getItem('accessToken')).toBe(authenticationSpy.account.accessToken)
     expect(history.length).toBe(1)
     expect(history.location.pathname).toBe('/')
   })

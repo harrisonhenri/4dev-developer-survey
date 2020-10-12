@@ -19,7 +19,7 @@ const Input: React.FC<Props> = (props: Props) => {
   }
 
   const getStatus = (): JSX.Element => {
-    return <FiAlertCircle color="#c53030" size={20} />
+    return error ? <FiAlertCircle color="#c53030" size={20} /> : <FiAlertCircle color="#008000" size={20} />
   }
 
   const getTitle = (): string => {
