@@ -21,6 +21,7 @@
     "test:watch": "yarn test -- --watch",
     "test:staged": "yarn test -- --findRelatedTests",
     "test:ci": "yarn test -- --coverage",
+    "test:coveralls": "yarn run test:ci && coveralls < coverage/lcov.info",
     "check": "yarn upgrade-interactive"
   },
   "devDependencies": {
@@ -33,6 +34,7 @@
     "@types/react-dom": "^16.9.8",
     "@typescript-eslint/eslint-plugin": "^4.2.0",
     "clean-webpack-plugin": "^3.0.0",
+    "coveralls": "^3.1.0",
     "css-loader": "^4.3.0",
     "eslint": "^7.9.0",
     "eslint-config-standard-with-typescript": "^19.0.1",
