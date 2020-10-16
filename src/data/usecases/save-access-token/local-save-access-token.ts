@@ -5,9 +5,9 @@ interface SetStorage {
 }
 
 export default class LocalSaveAccessToken implements SaveAccessToken {
-  constructor (private readonly SetStorageSpy: SetStorage) {}
+  constructor (private readonly SetStorageMock: SetStorage) {}
 
   async save (accessToken: string): Promise<void> {
-    await this.SetStorageSpy.set('accessToken', accessToken)
+    await this.SetStorageMock.set('accessToken', accessToken)
   }
 }
