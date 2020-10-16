@@ -7,7 +7,7 @@ type SutTypes={
   setStorageMock: SetStorageMock
 }
 
-const makeSut = (url = faker.internet.url()): SutTypes => {
+const makeSut = (): SutTypes => {
   const setStorageMock = new SetStorageMock()
   const sut = new LocalSaveAccessToken(setStorageMock)
 

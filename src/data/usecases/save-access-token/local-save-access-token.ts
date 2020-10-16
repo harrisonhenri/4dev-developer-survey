@@ -1,8 +1,5 @@
+import { SetStorage } from '@/data/protocols/cache/set-storage'
 import { SaveAccessToken } from '@/domain/usecases/save-access-token'
-
-interface SetStorage {
-  set: (key: string, value: any) => Promise<void>
-}
 
 export default class LocalSaveAccessToken implements SaveAccessToken {
   constructor (private readonly SetStorageMock: SetStorage) {}
