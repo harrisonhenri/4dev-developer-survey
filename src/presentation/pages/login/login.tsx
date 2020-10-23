@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import Styles from './login-styles.scss'
 import Context from '@/presentation/contexts/form/form-context'
-import { Validation } from '@/presentation/protocols/validation'
+import { Validation } from '@/presentation/protocols'
 import { Authentication, SaveAccessToken } from '@/domain/usecases'
 import { Link, useHistory } from 'react-router-dom'
 
-import { LoginHeader, Footer, Input, FormStatus } from '@/presentation/components'
+import { LoginHeader, Footer, Input, FormStatus, SubmitButton } from '@/presentation/components'
 
 type Props = {
   validation: Validation
@@ -16,17 +16,35 @@ type Props = {
 const Login: React.FC<Props> = ({ validation, authentication, saveAccessToken }: Props) => {
   const history = useHistory()
 
-  const [state, setState] = useState({ isLoading: false, mainError: '', email: '', password: '', emailError: '', passwordError: '' })
+  const [state, setState] = useState({
+    isLoading: false,
+    isFormInvalid: true,
+    mainError: '',
+    email: '',
+    password: '',
+    emailError: '',
+    passwordError: ''
+  })
 
   useEffect(() => {
-    setState({ ...state, emailError: validation.validate('email', state.email), passwordError: validation.validate('password', state.password) })
+    const { email, password } = state
+
+    const emailError = validation.validate('email', { email, password })
+    const passwordError = validation.validate('password', { email, password })
+
+    setState({
+      ...state,
+      emailError,
+      passwordError,
+      isFormInvalid: !!emailError || !!passwordError
+    })
   }, [state.email, state.password, validation])
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault()
 
     try {
-      if (state.isLoading || state.emailError || state.passwordError) {
+      if (state.isLoading || state.isFormInvalid) {
         return
       }
       setState({ ...state, isLoading: true })
@@ -51,7 +69,7 @@ const Login: React.FC<Props> = ({ validation, authentication, saveAccessToken }:
           <h2>Login</h2>
           <Input type="email" name="email" id="E-mail"/>
           <Input type="password" name="password" id="Senha"/>
-          <button disabled={!!state.emailError || !!state.passwordError} type="submit">Entrar</button>
+          <SubmitButton text='Entrar'/>
           <Link data-testid='signup' to="/signup" className={Styles.link}>Criar conta</Link>
           <FormStatus />
         </form>

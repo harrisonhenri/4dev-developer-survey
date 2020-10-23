@@ -9,7 +9,7 @@
   outline: 0;
 }
 
-input[type="password"], input[type="email"]{
+input[type="text"], input[type="password"], input[type="email"]{
   border: 1px solid $primaryLight;
   line-height: 40px;
   border-radius: 10px;
@@ -30,6 +30,11 @@ button {
 
   &:hover {
     opacity: 0.9;
+  }
+
+  &:disabled {
+    background-color: $disabledBackground;
+    color:$disabledColor
   }
 }
 
