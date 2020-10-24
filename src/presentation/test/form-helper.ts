@@ -1,10 +1,14 @@
 import { RenderResult, fireEvent } from '@testing-library/react'
 import faker from 'faker'
 
-export const testStatusForField = (sut: RenderResult, fieldName: string, validationError?: string): void => {
-  const fieldStatus = sut.getByTestId(`${fieldName}-status`)
+export const testStatusForField = (sut: RenderResult, fieldName: string, validationError = ''): void => {
+  const wrap = sut.getByTestId(`${fieldName}-wrap`)
+  const field = sut.getByTestId(fieldName)
+  const label = sut.getByTestId(`${fieldName}-label`)
 
-  expect(fieldStatus.title).toBe(validationError ?? 'Tudo certo!')
+  expect(wrap.getAttribute('data-status')).toBe(validationError ? 'invalid' : 'valid')
+  expect(field.title).toBe(validationError)
+  expect(label.title).toBe(validationError)
 }
 
 export const populateField = (sut: RenderResult, fieldName: string, value = faker.random.word()): void => {

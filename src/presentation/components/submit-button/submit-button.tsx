@@ -9,7 +9,7 @@ const SubmitButton: React.FC<Props> = ({ text }: Props) => {
   const { state } = useContext(Context)
 
   return (
-    <button disabled={state.isFormInvalid} type="submit">{text}</button>
+    <button data-testid='submit' disabled={state.isFormInvalid} type="submit">{text}</button>
   )
 }
 

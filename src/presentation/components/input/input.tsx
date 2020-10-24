@@ -1,35 +1,30 @@
-import React, { useContext } from 'react'
-import { FiAlertCircle } from 'react-icons/fi'
-import Styles from './input-styles.scss'
+import React, { useRef, useContext } from 'react'
 import Context from '@/presentation/contexts/form/form-context'
+
+import Styles from './input-styles.scss'
 
 type Props = React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>
 
 const Input: React.FC<Props> = (props: Props) => {
+  const inputRef = useRef<HTMLInputElement>()
   const { state, setState } = useContext(Context)
 
   const error = state[`${props.name}Error`]
-
-  const enableInput = (event: React.FocusEvent<HTMLInputElement>): void => {
-    event.target.readOnly = false
-  }
-
-  const handleChange = (event: React.FocusEvent<HTMLInputElement>): void => {
-    setState({ ...state, [event.target.name]: event.target.value })
-  }
-
-  const getStatus = (): JSX.Element => {
-    return error ? <FiAlertCircle color="#c53030" size={20} /> : <FiAlertCircle color="#008000" size={20} />
-  }
-
-  const getTitle = (): string => {
-    return error ?? 'Tudo certo!'
-  }
-
   return (
-    <div className={Styles.inputContainer}>
-      <input {...props} data-testid={`${props.name}`} readOnly onFocus={enableInput} onChange={handleChange}/>
-      <span data-testid={`${props.name}-status`} title={getTitle()} className={Styles.inputStatus}>{getStatus()}</span>
+    <div data-testid={`${props.name}-wrap`} className={Styles.inputWrap} data-status={error ? 'invalid' : 'valid'}>
+      <input
+        {...props}
+        ref={inputRef}
+        title={error}
+        placeholder=" "
+        data-testid={props.name}
+        readOnly
+        onFocus={e => { e.target.readOnly = false }}
+        onChange={e => { setState({ ...state, [e.target.name]: e.target.value }) }}
+      />
+      <label data-testid={`${props.name}-label`} onClick={() => { inputRef.current.focus() }} title={error}>
+        {props.placeholder}
+      </label>
     </div>
   )
 }
