@@ -1,6 +1,6 @@
 {
   "name": "clean-react",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "main": "index.js",
   "author": "HarrisonHenri <harrisonhenrisn@onyo.com>",
   "license": "MIT",
@@ -22,9 +22,11 @@
     "test:staged": "yarn test -- --findRelatedTests",
     "test:ci": "yarn test -- --coverage",
     "test:coveralls": "yarn run test:ci && coveralls < coverage/lcov.info",
+    "test:cypress": "cypress open",
     "check": "yarn upgrade-interactive"
   },
   "devDependencies": {
+    "@cypress/webpack-preprocessor": "5.4.5",
     "@testing-library/react": "^11.0.4",
     "@types/axios": "^0.14.0",
     "@types/faker": "^5.1.2",
@@ -36,8 +38,10 @@
     "clean-webpack-plugin": "^3.0.0",
     "coveralls": "^3.1.0",
     "css-loader": "^4.3.0",
+    "cypress": "5.2.0",
     "eslint": "^7.9.0",
     "eslint-config-standard-with-typescript": "^19.0.1",
+    "eslint-plugin-cypress": "2.11.1",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
