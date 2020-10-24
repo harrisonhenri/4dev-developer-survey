@@ -4,7 +4,7 @@ import { AddAccount, AddAccountParams } from '@/domain/usecases'
 import { AccountModel } from '@/domain/models'
 
 export default class RemoteAddAccount implements AddAccount {
-  constructor (private readonly url: string, private readonly httpPostClient: HttpPostClient<AddAccountParams, AccountModel>) {
+  constructor (private readonly url: string, private readonly httpPostClient: HttpPostClient<AccountModel>) {
 
   }
 

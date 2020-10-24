@@ -4,7 +4,7 @@ import { AccountModel } from 'domain/models'
 import { Authentication, AuthenticationParams } from 'domain/usecases'
 
 export default class RemoteAuthentication implements Authentication {
-  constructor (private readonly url: string, private readonly httpPostClient: HttpPostClient<AuthenticationParams, AccountModel>) {
+  constructor (private readonly url: string, private readonly httpPostClient: HttpPostClient<AccountModel>) {
 
   }
 
