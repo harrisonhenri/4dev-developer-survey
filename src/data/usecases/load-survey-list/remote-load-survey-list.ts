@@ -1,26 +1,22 @@
-import { HttpGetClient } from '@/data/protocols/http'
-import { LoadSurveyList } from '@/domain/usecases'
+import { HttpGetClient, HttpStatusCode } from '@/data/protocols/http'
+import { UnexpectedError } from '@/domain/errors'
 import { SurveyModel } from '@/domain/models'
+import { LoadSurveyList } from '@/domain/usecases'
 
 export default class RemoteLoadSurveyList implements LoadSurveyList {
   constructor (
     private readonly url: string,
-    private readonly httpClient: HttpGetClient
+    private readonly httpClient: HttpGetClient<SurveyModel[]>
   ) {}
 
-  async loadAll (): Promise<SurveyModel> {
-    await this.httpClient.get({
+  async loadAll (): Promise<SurveyModel[]> {
+    const httpResponse = await this.httpClient.get({
       url: this.url
     })
-    return null
-    // const remoteSurveys = httpResponse.body || []
-    // switch (httpResponse.statusCode) {
-    //   case HttpStatusCode.ok: return remoteSurveys.map(remoteSurvey => ({
-    //     ...remoteSurvey,
-    //     date: new Date(remoteSurvey.date)
-    //   }))
-    //   case HttpStatusCode.noContent: return []
-    //   default: throw new UnexpectedError()
-    // }
+    switch (httpResponse.statusCode) {
+      case HttpStatusCode.ok: return httpResponse.body
+      case HttpStatusCode.noContent: return []
+      default: throw new UnexpectedError()
+    }
   }
 }

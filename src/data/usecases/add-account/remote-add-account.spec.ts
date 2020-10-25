@@ -8,7 +8,7 @@ import faker from 'faker'
 
 type SutTypes={
   sut: RemoteAddAccount
-  httpPostClientSpy: HttpPostClientSpy< AccountModel>
+  httpPostClientSpy: HttpPostClientSpy<AccountModel>
 }
 
 const makeSut = (url = faker.internet.url()): SutTypes => {
