@@ -4,11 +4,10 @@ module.exports = {
     '<rootDir>/src/**/*.{ts,tsx}',
     '!<rootDir>/src/main/**/*',
     '!<rootDir>/src/**/index.ts',
-    '!<rootDir>/src/presentation/components/router/**/*',
     '!**/*.d.ts'
   ],
   coverageDirectory: 'coverage',
-  // setupFilesAfterEnv: ['<rootDir>/src/main/config/jest-setup.ts'],
+  setupFilesAfterEnv: ['<rootDir>/src/main/config/jest-setup.ts'],
   testPathIgnorePatterns: [
     '<rootDir>/node_modules/',
     '<rootDir>/src/main/test/cypress'

@@ -1,11 +1,13 @@
-import { SetStorage } from '@/data/protocols/cache/set-storage'
+import { GetStorage } from '@/data/protocols/cache'
 
-export class SetStorageMock implements SetStorage {
+import faker from 'faker'
+
+export class GetStorageSpy implements GetStorage {
   key: string
-  value: any
+  value: any = faker.random.objectElement()
 
-  async set (key: string, value: any): Promise<void> {
+  get (key: string): any {
     this.key = key
-    this.value = value
+    return this.value
   }
 }

@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import Styles from './login-styles.scss'
-import Context from '@/presentation/contexts/form/form-context'
+import { FormContext, ApiContext } from '@/presentation/contexts/'
 import { Validation } from '@/presentation/protocols'
-import { Authentication, SaveAccessToken } from '@/domain/usecases'
+import { Authentication } from '@/domain/usecases'
 import { Link, useHistory } from 'react-router-dom'
 
 import { LoginHeader, Footer, Input, FormStatus, SubmitButton } from '@/presentation/components'
@@ -10,10 +10,11 @@ import { LoginHeader, Footer, Input, FormStatus, SubmitButton } from '@/presenta
 type Props = {
   validation: Validation
   authentication: Authentication
-  saveAccessToken: SaveAccessToken
 }
 
-const Login: React.FC<Props> = ({ validation, authentication, saveAccessToken }: Props) => {
+const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
+  const { setCurrentAccount } = useContext(ApiContext)
+
   const history = useHistory()
 
   const [state, setState] = useState({
@@ -53,7 +54,7 @@ const Login: React.FC<Props> = ({ validation, authentication, saveAccessToken }:
 
       const account = await authentication.auth({ email, password })
 
-      await saveAccessToken.save(account.accessToken)
+      await setCurrentAccount(account)
 
       history.replace('/')
     } catch (error) {
@@ -62,9 +63,9 @@ const Login: React.FC<Props> = ({ validation, authentication, saveAccessToken }:
   }
 
   return (
-    <div className={Styles.login}>
+    <div className={Styles.loginContainer}>
       <LoginHeader />
-      <Context.Provider value={{ state, setState }}>
+      <FormContext.Provider value={{ state, setState }}>
         <form data-testid='form' className={Styles.form} onSubmit={handleSubmit}>
           <h2>Login</h2>
           <Input type="email" name="email" placeholder="E-mail"/>
@@ -73,7 +74,7 @@ const Login: React.FC<Props> = ({ validation, authentication, saveAccessToken }:
           <Link data-testid='signup' to="/signup" className={Styles.link}>Criar conta</Link>
           <FormStatus />
         </form>
-      </Context.Provider>
+      </FormContext.Provider>
       <Footer/>
     </div>
   )

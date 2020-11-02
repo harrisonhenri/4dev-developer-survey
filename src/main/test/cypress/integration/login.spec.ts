@@ -7,7 +7,7 @@ import faker from 'faker'
 const path = /login/
 const mockInvalidCredentialsError = (): void => Http.mockUnauthorizedError(path)
 const mockUnexpectedError = (): void => Http.mockServerError(path, 'POST')
-const mockSuccess = (): void => Http.mockOk(path, 'POST', 'account')
+const mockSuccess = (): void => Http.mockOk(path, 'POST', { accessToken: faker.random.uuid(), name: faker.name.findName() })
 
 const populateFields = (): void => {
   cy.getByTestId('email').focus().type(faker.internet.email())
@@ -73,7 +73,7 @@ describe('Login', () => {
     Helper.testUrl('/login')
   })
 
-  xit('Should store account on localStorage if valid credentials are provided', () => {
+  it('Should store account on localStorage if valid credentials are provided', () => {
     mockSuccess()
     simulateValidSubmit()
     cy.getByTestId('error-wrap').should('not.have.descendants')

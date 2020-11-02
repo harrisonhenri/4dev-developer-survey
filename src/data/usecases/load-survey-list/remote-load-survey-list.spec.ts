@@ -1,19 +1,17 @@
-import RemoteLoadSurveyList from './remote-load-survey-list'
-import { HttpGetClientSpy } from '@/data/test'
+import { RemoteLoadSurveyList } from '@/data/usecases'
+import { HttpGetClientSpy, mockRemoteSurveyListModel } from '@/data/test'
 import { HttpStatusCode } from '@/data/protocols/http'
-import { SurveyModel } from '@/domain/models'
-import { UnexpectedError } from '@/domain/errors'
+import { UnexpectedError, AccessDeniedError } from '@/domain/errors'
 
 import faker from 'faker'
-import { mockRemoteSurveyListModel } from '@/data/test/mock-remote-survey-list'
 
 type SutTypes = {
   sut: RemoteLoadSurveyList
-  httpGetClientSpy: HttpGetClientSpy<SurveyModel[]>
+  httpGetClientSpy: HttpGetClientSpy<RemoteLoadSurveyList.Model[]>
 }
 
 const makeSut = (url = faker.internet.url()): SutTypes => {
-  const httpGetClientSpy = new HttpGetClientSpy<SurveyModel[]>()
+  const httpGetClientSpy = new HttpGetClientSpy<RemoteLoadSurveyList.Model[]>()
   const sut = new RemoteLoadSurveyList(url, httpGetClientSpy)
   return {
     sut,
@@ -31,7 +29,7 @@ describe('RemoteLoadSurveyList', () => {
     expect(httpGetClientSpy.url).toBe(url)
   })
 
-  test('Should throw UnexpectedError if HttpClient returns 403', async () => {
+  test('Should throw AccessDeniedError if HttpClient returns 403', async () => {
     const { sut, httpGetClientSpy } = makeSut()
     httpGetClientSpy.response = {
       statusCode: HttpStatusCode.forbidden
@@ -39,7 +37,7 @@ describe('RemoteLoadSurveyList', () => {
 
     const promise = sut.loadAll()
 
-    await expect(promise).rejects.toThrow(new UnexpectedError())
+    await expect(promise).rejects.toThrow(new AccessDeniedError())
   })
 
   test('Should throw UnexpectedError if HttpClient returns 404', async () => {
@@ -74,7 +72,22 @@ describe('RemoteLoadSurveyList', () => {
 
     const surveyList = await sut.loadAll()
 
-    expect(surveyList).toEqual(httpResult)
+    expect(surveyList).toEqual([{
+      id: httpResult[0].id,
+      question: httpResult[0].question,
+      didAnswer: httpResult[0].didAnswer,
+      date: new Date(httpResult[0].date)
+    }, {
+      id: httpResult[1].id,
+      question: httpResult[1].question,
+      didAnswer: httpResult[1].didAnswer,
+      date: new Date(httpResult[1].date)
+    }, {
+      id: httpResult[2].id,
+      question: httpResult[2].question,
+      didAnswer: httpResult[2].didAnswer,
+      date: new Date(httpResult[2].date)
+    }])
   })
 
   test('Should return an empty list if HttpClient returns 204', async () => {

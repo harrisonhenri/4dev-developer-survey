@@ -1,19 +1,20 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import Styles from './signup-styles.scss'
-import Context from '@/presentation/contexts/form/form-context'
+import { FormContext, ApiContext } from '@/presentation/contexts/'
 import { Validation } from '@/presentation/protocols'
-import { AddAccount, SaveAccessToken } from '@/domain/usecases'
+import { AddAccount } from '@/domain/usecases'
 
 import { LoginHeader, Footer, Input, FormStatus, SubmitButton } from '@/presentation/components'
 
 type Props = {
   validation: Validation
   addAccount: AddAccount
-  saveAccessToken: SaveAccessToken
 }
 
-const SignUp: React.FC<Props> = ({ validation, addAccount, saveAccessToken }: Props) => {
+const SignUp: React.FC<Props> = ({ validation, addAccount }: Props) => {
+  const { setCurrentAccount } = useContext(ApiContext)
+
   const history = useHistory()
 
   const [state, setState] = useState({
@@ -61,7 +62,7 @@ const SignUp: React.FC<Props> = ({ validation, addAccount, saveAccessToken }: Pr
 
       const account = await addAccount.add({ name, email, password, passwordConfirmation })
 
-      await saveAccessToken.save(account.accessToken)
+      await setCurrentAccount(account)
 
       history.replace('/')
     } catch (error) {
@@ -70,9 +71,9 @@ const SignUp: React.FC<Props> = ({ validation, addAccount, saveAccessToken }: Pr
   }
 
   return (
-    <div className={Styles.signup}>
+    <div className={Styles.signupContainer}>
       <LoginHeader />
-      <Context.Provider value={{ state, setState }}>
+      <FormContext.Provider value={{ state, setState }}>
         <form data-testid='form' className={Styles.form} onSubmit={handleSubmit}>
           <h2>Cadastro</h2>
           <Input type="text" name="name" placeholder="Nome"/>
@@ -83,7 +84,7 @@ const SignUp: React.FC<Props> = ({ validation, addAccount, saveAccessToken }: Pr
           <Link data-testid='login' to="/login" className={Styles.link}>Voltar ao login</Link>
           <FormStatus />
         </form>
-      </Context.Provider>
+      </FormContext.Provider>
       <Footer/>
     </div>
   )
