@@ -16,13 +16,13 @@ describe('SurveyList', () => {
   it('Should present error on UnexpectedError', () => {
     mockUnexpectedError()
     cy.visit('')
-    cy.getByTestId('error').should('contain.text', 'Algo de errado aconteceu. Tente novamente em breve.')
+    cy.getByTestId('error').should('contain.text', 'Algo de errado aconteceu. Tente novamente.')
   })
 
   it('Should reload on button click', () => {
     mockUnexpectedError()
     cy.visit('')
-    cy.getByTestId('error').should('contain.text', 'Algo de errado aconteceu. Tente novamente em breve.')
+    cy.getByTestId('error').should('contain.text', 'Algo de errado aconteceu. Tente novamente.')
     mockSuccess()
     cy.getByTestId('reload').click()
     cy.get('li:not(:empty)').should('have.length', 2)

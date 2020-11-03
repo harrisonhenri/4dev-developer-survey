@@ -7,7 +7,7 @@ import faker from 'faker'
 const path = /signup/
 const mockEmailInUseError = (): void => Http.mockForbiddenError(path, 'POST')
 const mockUnexpectedError = (): void => Http.mockServerError(path, 'POST')
-const mockSuccess = (): void => Http.mockOk(path, 'POST', { accessToken: faker.random.uuid(), name: faker.name.findName() })
+const mockSuccess = (): void => Http.mockOk(path, 'POST', 'fx:account')
 
 const populateFields = (): void => {
   cy.getByTestId('name').focus().type(faker.random.alphaNumeric(7))

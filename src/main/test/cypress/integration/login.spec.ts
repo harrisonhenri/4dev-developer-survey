@@ -7,7 +7,7 @@ import faker from 'faker'
 const path = /login/
 const mockInvalidCredentialsError = (): void => Http.mockUnauthorizedError(path)
 const mockUnexpectedError = (): void => Http.mockServerError(path, 'POST')
-const mockSuccess = (): void => Http.mockOk(path, 'POST', { accessToken: faker.random.uuid(), name: faker.name.findName() })
+const mockSuccess = (): void => Http.mockOk(path, 'POST', 'fx:account')
 
 const populateFields = (): void => {
   cy.getByTestId('email').focus().type(faker.internet.email())
@@ -30,7 +30,7 @@ describe('Login', () => {
     cy.getByTestId('password').should('have.attr', 'readOnly')
     FormHelper.testInputStatus('password', 'Campo obrigatório')
     cy.getByTestId('submit').should('have.attr', 'disabled')
-    cy.getByTestId('main-error').should('not.have.descendants')
+    cy.getByTestId('error-wrap').should('not.have.descendants')
   })
 
   it('Should reset state on page load', () => {
