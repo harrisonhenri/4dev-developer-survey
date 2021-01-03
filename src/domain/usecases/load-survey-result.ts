@@ -12,7 +12,7 @@ export namespace LoadSurveyResult {
       answer: string
       count: number
       percent: number
-      isCurrentAcccountAnswer: boolean
+      isCurrentAccountAnswer: boolean
     }
     >
   }

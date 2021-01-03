@@ -56,6 +56,7 @@ describe('SurveyList Component', () => {
     await waitFor(() => surveyList)
 
     expect(surveyList.querySelectorAll('li.surveyItemWrap')).toHaveLength(3)
+
     expect(screen.queryByTestId('error')).not.toBeInTheDocument()
   })
 
