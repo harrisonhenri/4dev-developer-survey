@@ -8,13 +8,11 @@ export class RemoteAuthentication implements Authentication {
     private readonly httpClient: HttpClient<RemoteAuthentication.Model>
   ) {}
 
-  r
-
   async auth (params: Authentication.Params): Promise<Authentication.Model> {
     const httpResponse = await this.httpClient.request({
       url: this.url,
-      body: params,
-      method: 'post'
+      method: 'post',
+      body: params
     })
     switch (httpResponse.statusCode) {
       case HttpStatusCode.ok: return httpResponse.body

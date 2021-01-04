@@ -11,8 +11,8 @@ export class RemoteAddAccount implements AddAccount {
   async add (params: AddAccount.Params): Promise<AddAccount.Model> {
     const httpResponse = await this.httpClient.request({
       url: this.url,
-      body: params,
-      method: 'post'
+      method: 'post',
+      body: params
     })
     switch (httpResponse.statusCode) {
       case HttpStatusCode.ok: return httpResponse.body

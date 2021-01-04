@@ -29,8 +29,8 @@ describe('RemoteAuthentication', () => {
     await sut.auth(authenticationParams)
 
     expect(httpClientSpy.url).toBe(url)
-    expect(httpClientSpy.body).toEqual(authenticationParams)
     expect(httpClientSpy.method).toBe('post')
+    expect(httpClientSpy.body).toEqual(authenticationParams)
   })
 
   test('Should throw InvalidCredentialsError if HttpClient returns 401', async () => {
