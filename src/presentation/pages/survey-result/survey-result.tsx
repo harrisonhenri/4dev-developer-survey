@@ -18,13 +18,13 @@ const SurveyResult: React.FC<Props> = ({ loadSurveyResult, saveSurveyResult }: P
   const [state, setState] = useState({
     isLoading: false,
     error: '',
-    surveyResult: null as LoadSurveyResult.Model,
+    surveyResult: null,
     reload: false
   })
   const reload = (): void => setState({ surveyResult: null, isLoading: false, error: '', reload: !state.reload })
   const onAnswer = (answer: string): void => {
     setState(old => ({ ...old, isLoading: true }))
-    saveSurveyResult.save({ answer }).then().catch()
+    saveSurveyResult.save({ answer }).then(surveyResult => setState(old => ({ ...old, isLoading: false, surveyResult }))).catch(handleError)
   }
 
   useEffect(() => {
