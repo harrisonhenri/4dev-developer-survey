@@ -1,6 +1,7 @@
 import React from 'react'
 import { SurveyList } from '@/presentation/pages'
 import { AccessDeniedError, UnexpectedError } from '@/domain/errors'
+import { RecoilRoot } from 'recoil'
 
 import { screen, waitFor, render, fireEvent } from '@testing-library/react'
 import { createMemoryHistory, MemoryHistory } from 'history'
@@ -20,11 +21,13 @@ const makeSut = (loadSurveyListSpy = new LoadSurveyListSpy()): SutTypes => {
   const setCurrentAccountMock = jest.fn()
 
   render(
-    <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountMock, getCurrentAccount: () => mockAccountModel() }}>
-      <Router history={history}>
-        <SurveyList loadSurveyList={loadSurveyListSpy} />
-      </Router>
-    </ApiContext.Provider>
+    <RecoilRoot>
+      <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountMock, getCurrentAccount: () => mockAccountModel() }}>
+        <Router history={history}>
+          <SurveyList loadSurveyList={loadSurveyListSpy} />
+        </Router>
+      </ApiContext.Provider>
+    </RecoilRoot>
   )
   return {
     loadSurveyListSpy,
