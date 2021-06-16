@@ -30,7 +30,7 @@ describe('Login', () => {
     cy.getByTestId('password').should('have.attr', 'readOnly')
     FormHelper.testInputStatus('password', 'Campo obrigatório')
     cy.getByTestId('submit').should('have.attr', 'disabled')
-    cy.getByTestId('error-wrap').should('not.have.descendants')
+    cy.getByTestId('form-status').should('not.have.descendants')
   })
 
   it('Should reset state on page load', () => {
@@ -47,7 +47,7 @@ describe('Login', () => {
     cy.getByTestId('password').focus().type(faker.random.alphaNumeric(3))
     FormHelper.testInputStatus('password', 'Valor inválido')
     cy.getByTestId('submit').should('have.attr', 'disabled')
-    cy.getByTestId('error-wrap').should('not.have.descendants')
+    cy.getByTestId('form-status').should('not.have.descendants')
   })
 
   it('Should present valid state if form is valid', () => {
@@ -56,7 +56,7 @@ describe('Login', () => {
     cy.getByTestId('password').focus().type(faker.random.alphaNumeric(5))
     FormHelper.testInputStatus('password')
     cy.getByTestId('submit').should('not.have.attr', 'disabled')
-    cy.getByTestId('error-wrap').should('not.have.descendants')
+    cy.getByTestId('form-status').should('not.have.descendants')
   })
 
   it('Should present InvalidCredentialsError on 401', () => {
@@ -76,7 +76,7 @@ describe('Login', () => {
   it('Should store account on localStorage if valid credentials are provided', () => {
     mockSuccess()
     simulateValidSubmit()
-    cy.getByTestId('error-wrap').should('not.have.descendants')
+    cy.getByTestId('form-status').should('not.have.descendants')
     Helper.testUrl('/')
     Helper.testLocalStorageItem('account')
   })

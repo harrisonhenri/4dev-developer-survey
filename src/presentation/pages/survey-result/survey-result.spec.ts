@@ -1,42 +1,44 @@
-import React from 'react'
 import { SurveyResult } from '@/presentation/pages'
-import { LoadSurveyResultSpy, mockAccountModel, mockSurveyResultModel, SaveSurveyResultSpy } from '@/domain/test'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-import { AccessDeniedError, UnexpectedError } from '@/domain/errors'
-import { Authentication } from '@/domain/usecases'
-import { MemoryHistory, createMemoryHistory } from 'history'
-import { Router } from 'react-router-dom'
-import { RecoilRoot } from 'recoil'
-import { currentAccountState } from '@/presentation/components'
+import { renderWithHistory } from '@/presentation/test'
+import { LoadSurveyResultSpy, SaveSurveyResultSpy, mockSurveyResultModel } from '@/domain/test'
+import { UnexpectedError, AccessDeniedError } from '@/domain/errors'
+import { AccountModel } from '@/domain/models'
+
+import { screen, waitFor, fireEvent } from '@testing-library/react'
+import { createMemoryHistory, MemoryHistory } from 'history'
+import { LoadSurveyResult } from '@/domain/usecases'
+import { surveyResultState } from './components'
 
 type SutTypes = {
-  history: MemoryHistory
-  setCurrentAccountMock: (account: Authentication.Model) => void
   loadSurveyResultSpy: LoadSurveyResultSpy
   saveSurveyResultSpy: SaveSurveyResultSpy
+  history: MemoryHistory
+  setCurrentAccountMock: (account: AccountModel) => void
 }
+
 type SutParams = {
   loadSurveyResultSpy?: LoadSurveyResultSpy
   saveSurveyResultSpy?: SaveSurveyResultSpy
-
+  initialState?: {
+    isLoading: boolean
+    error: string
+    surveyResult: LoadSurveyResult.Model
+    reload: boolean
+  }
 }
 
-const makeSut = ({ loadSurveyResultSpy = new LoadSurveyResultSpy(), saveSurveyResultSpy = new SaveSurveyResultSpy() }: SutParams = {}): SutTypes => {
+const makeSut = ({ loadSurveyResultSpy = new LoadSurveyResultSpy(), saveSurveyResultSpy = new SaveSurveyResultSpy(), initialState = null }: SutParams = {}): SutTypes => {
   const history = createMemoryHistory({ initialEntries: ['/', '/surveys/any_id'], initialIndex: 1 })
-  const setCurrentAccountMock = jest.fn()
-
-  render(
-    <RecoilRoot initializeState={({ set }) => set(currentAccountState, { setCurrentAccount: setCurrentAccountMock, getCurrentAccount: () => mockAccountModel() })}>
-      <Router history={history}>
-        <SurveyResult loadSurveyResult={loadSurveyResultSpy} saveSurveyResult={saveSurveyResultSpy}/>
-      </Router>
-    </RecoilRoot>
-  )
+  const { setCurrentAccountMock } = renderWithHistory({
+    history,
+    Page: () => SurveyResult({ loadSurveyResult: loadSurveyResultSpy, saveSurveyResult: saveSurveyResultSpy }),
+    states: initialState ? [{ atom: surveyResultState, value: initialState }] : []
+  })
   return {
     loadSurveyResultSpy,
+    saveSurveyResultSpy,
     history,
-    setCurrentAccountMock,
-    saveSurveyResultSpy
+    setCurrentAccountMock
   }
 }
 
@@ -220,14 +222,19 @@ describe('SurveyResult Component', () => {
   })
 
   test('Should prevent multiple answer click', async () => {
-    const { saveSurveyResultSpy } = makeSut()
+    const initialState = {
+      isLoading: true,
+      error: '',
+      surveyResult: null,
+      reload: false
+    }
+    const { saveSurveyResultSpy } = makeSut({ initialState })
     await waitFor(() => screen.getByTestId('survey-result'))
     const answersWrap = screen.queryAllByTestId('answer-wrap')
 
     fireEvent.click(answersWrap[1])
     await waitFor(() => screen.getByTestId('survey-result'))
-    fireEvent.click(answersWrap[1])
 
-    expect(saveSurveyResultSpy.callsCount).toBe(1)
+    expect(saveSurveyResultSpy.callsCount).toBe(0)
   })
 })
