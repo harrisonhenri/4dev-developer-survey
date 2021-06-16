@@ -1,11 +1,13 @@
-import React, { useState, useEffect, useContext } from 'react'
-import { Link, useHistory } from 'react-router-dom'
 import Styles from './signup-styles.scss'
-import { FormContext, ApiContext } from '@/presentation/contexts/'
+import { signUpState, Input, SubmitButton, FormStatus } from './components'
+import { Footer, LoginHeader } from '@/presentation/components'
 import { Validation } from '@/presentation/protocols'
 import { AddAccount } from '@/domain/usecases'
 
-import { LoginHeader, Footer, Input, FormStatus, SubmitButton } from '@/presentation/components'
+import { useHistory, Link } from 'react-router-dom'
+import { useRecoilState, useResetRecoilState } from 'recoil'
+import React, { useContext, useEffect } from 'react'
+import { ApiContext } from '@/presentation/contexts'
 
 type Props = {
   validation: Validation
@@ -13,79 +15,62 @@ type Props = {
 }
 
 const SignUp: React.FC<Props> = ({ validation, addAccount }: Props) => {
+  const resetSignUpState = useResetRecoilState(signUpState)
   const { setCurrentAccount } = useContext(ApiContext)
-
   const history = useHistory()
+  const [state, setState] = useRecoilState(signUpState)
 
-  const [state, setState] = useState({
-    isLoading: false,
-    isFormInvalid: true,
-    mainError: '',
-    name: '',
-    email: '',
-    password: '',
-    passwordConfirmation: '',
-    nameError: '',
-    emailError: '',
-    passwordError: '',
-    passwordConfirmationError: ''
-  })
+  useEffect(() => resetSignUpState(), [])
+  useEffect(() => validate('name'), [state.name])
+  useEffect(() => validate('email'), [state.email])
+  useEffect(() => validate('password'), [state.password])
+  useEffect(() => validate('passwordConfirmation'), [state.passwordConfirmation])
 
-  useEffect(() => {
+  const validate = (field: string): void => {
     const { name, email, password, passwordConfirmation } = state
-
-    const nameError = validation.validate('name', { name, email, password, passwordConfirmation })
-    const emailError = validation.validate('email', { name, email, password, passwordConfirmation })
-    const passwordError = validation.validate('password', { name, email, password, passwordConfirmation })
-    const passwordConfirmationError = validation.validate('passwordConfirmation', { name, email, password, passwordConfirmation })
-
-    setState({
-      ...state,
-      nameError,
-      emailError,
-      passwordError,
-      passwordConfirmationError,
-      isFormInvalid: !!nameError || !!emailError || !!passwordError || !!passwordConfirmationError
-    })
-  }, [state.email, state.name, state.password, state.passwordConfirmation, validation])
+    const formData = { name, email, password, passwordConfirmation }
+    setState(old => ({ ...old, [`${field}Error`]: validation.validate(field, formData) }))
+    setState(old => ({ ...old, isFormInvalid: !!old.nameError || !!old.emailError || !!old.passwordError || !!old.passwordConfirmationError }))
+  }
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault()
-
     try {
       if (state.isLoading || state.isFormInvalid) {
         return
       }
       setState(old => ({ ...old, isLoading: true }))
-
-      const { name, email, password, passwordConfirmation } = state
-
-      const account = await addAccount.add({ name, email, password, passwordConfirmation })
-
-      await setCurrentAccount(account)
-
+      const account = await addAccount.add({
+        name: state.name,
+        email: state.email,
+        password: state.password,
+        passwordConfirmation: state.passwordConfirmation
+      })
+      setCurrentAccount(account)
       history.replace('/')
     } catch (error) {
-      setState(old => ({ ...old, isLoading: false, mainError: error.message }))
+      setState(old => ({
+        ...old,
+        isLoading: false,
+        mainError: error.message
+      }))
     }
   }
 
   return (
-    <div className={Styles.signupContainer}>
+    <div className={Styles.signupWrap}>
       <LoginHeader />
-      <FormContext.Provider value={{ state, setState }}>
-        <form data-testid='form' className={Styles.form} onSubmit={handleSubmit}>
-          <h2>Cadastro</h2>
-          <Input type="text" name="name" placeholder="Nome"/>
-          <Input type="email" name="email" placeholder="E-mail"/>
-          <Input type="password" name="password" placeholder="Senha"/>
-          <Input type="password" name="passwordConfirmation" placeholder="Confirme sua senha"/>
-          <SubmitButton text='Cadastrar'/>
-          <Link data-testid='login' to="/login" className={Styles.link}>Voltar ao login</Link>
-          <FormStatus />
-        </form>
-      </FormContext.Provider>
-      <Footer/>
+      <form data-testid="form" className={Styles.form} onSubmit={handleSubmit}>
+        <h2>Criar Conta</h2>
+        <Input type="text" name="name" placeholder="Digite seu nome" />
+        <Input type="email" name="email" placeholder="Digite seu e-mail" />
+        <Input type="password" name="password" placeholder="Digite sua senha" />
+        <Input type="password" name="passwordConfirmation" placeholder="Repita sua senha" />
+        <SubmitButton text="Cadastrar" />
+        <Link data-testid="login" replace to="/login" className={Styles.link}>Voltar Para Login</Link>
+        <FormStatus />
+      </form>
+      <Footer />
     </div>
   )
 }

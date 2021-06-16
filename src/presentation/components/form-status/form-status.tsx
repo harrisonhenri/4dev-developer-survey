@@ -1,22 +1,18 @@
-import React, { useContext } from 'react'
-import { BarLoader } from 'react-spinners'
 import Styles from './form-status-styles.scss'
-import Context from '@/presentation/contexts/form/form-context'
+import { Spinner } from '@/presentation/components'
 
-const FormStatus: React.FC = () => {
-  const { state } = useContext(Context)
+import React from 'react'
 
-  const { mainError, isLoading } = state
+type Props = {
+  state: any
+}
 
+const FormStatus: React.FC<Props> = ({ state }: Props) => {
+  const { isLoading, mainError } = state
   return (
-    <div data-testid='form-status' className={Styles.errorContainer}>
-
-      <BarLoader
-        color={'#123abc'}
-        loading={isLoading}
-      />
-
-      {mainError && <span data-testid='main-error' className={Styles.error}>{mainError}</span>}
+    <div data-testid="form-status" className={Styles.errorWrap}>
+      {isLoading && <Spinner className={Styles.spinner} />}
+      {mainError && <span data-testid="main-error" className={Styles.error}>{mainError}</span>}
     </div>
   )
 }
