@@ -3,9 +3,9 @@ import { createMemoryHistory, MemoryHistory } from 'history'
 import { render } from '@testing-library/react'
 import { Router } from 'react-router-dom'
 
-import { PrivateRoute } from '@/presentation/components'
+import { currentAccountState, PrivateRoute } from '@/presentation/components'
 import { mockAccountModel } from '@/domain/test'
-import { ApiContext } from '@/presentation/contexts'
+import { RecoilRoot } from 'recoil'
 
 type SutTypes = {
   history: MemoryHistory
@@ -14,12 +14,11 @@ type SutTypes = {
 const makeSut = (account = mockAccountModel()): SutTypes => {
   const history = createMemoryHistory({ initialEntries: ['/'] })
   render(
-    <ApiContext.Provider value={{ getCurrentAccount: () => account }}>
+    <RecoilRoot initializeState={({ set }) => set(currentAccountState, { setCurrentAccount: null, getCurrentAccount: () => account })}>
       <Router history={history}>
         <PrivateRoute />
       </Router>
-    </ApiContext.Provider>
-  )
+    </RecoilRoot>)
   return { history }
 }
 

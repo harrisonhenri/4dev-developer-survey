@@ -7,9 +7,9 @@ import { SignUp } from '@/presentation/pages'
 import { ValidationStub, Helper } from '@/presentation/test'
 import { AddAccountSpy } from '@/domain/test'
 import { EmailInUseError } from '@/domain/errors'
-import { ApiContext } from '@/presentation/contexts'
 import { AddAccount } from '@/domain/usecases'
 import { RecoilRoot } from 'recoil'
+import { currentAccountState } from '@/presentation/components'
 
 type SutTypes = {
   addAccountSpy: AddAccountSpy
@@ -30,15 +30,13 @@ const makeSut = (params?: SutParams): SutTypes => {
   const addAccountSpy = new AddAccountSpy()
 
   render(
-    <RecoilRoot>
-      <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountMock }}>
-        <Router history={history}>
-          <SignUp
-            validation={validationStub}
-            addAccount={addAccountSpy}
-          />
-        </Router>
-      </ApiContext.Provider>
+    <RecoilRoot initializeState={({ set }) => set(currentAccountState, { setCurrentAccount: setCurrentAccountMock, getCurrentAccount: null })}>
+      <Router history={history}>
+        <SignUp
+          validation={validationStub}
+          addAccount={addAccountSpy}
+        />
+      </Router>
     </RecoilRoot>
   )
 
