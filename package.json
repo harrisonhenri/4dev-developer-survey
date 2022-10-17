@@ -2,7 +2,7 @@
   "name": "clean-react",
   "version": "2.1.0",
   "main": "index.js",
-  "author": "HarrisonHenri <harrisonhenrisn@onyo.com>",
+  "author": "HarrisonHenri <harrisonhenrisn@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "@types/react-router-dom": "^5.1.6",
